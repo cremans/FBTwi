@@ -74,8 +74,6 @@ lst_nomSim = {
     '\\': '.(.',
     }
 
-fragmentosTS = []
-
 
 def solicitarToken(vodID):
     global url_api
@@ -206,7 +204,6 @@ def crearTxtProp(nom_vid):
 
 def main(vodID):
     global lst_nomSim
-    global fragmentosTS
     
     nom_orig = obtenerNom(vodID)
     os.system("echo Nombre Original: " + nom_orig)
@@ -235,7 +232,6 @@ def main(vodID):
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     os.system("echo -------------------------------------------------")
     os.system("echo Descarga de Fragmentos. Errores:")
-    fragmentosTS = [None] * len(lista_frag)
     asyncio.run(realizarTareas(url_ts, lista_frag))
 
     os.system("echo -------------------------------------------------")
@@ -243,7 +239,7 @@ def main(vodID):
     with open(nom_vid + ".ts", "wb") as arch_ts:
         for i in range(len(lista_frag)):
             with open("./ts/" + str(i) + ".ts", "rb") as fragmento:
-                arch_ts.write(fragmento)
+                arch_ts.write(fragmento.read())
             os.remove("./ts/" + str(i) + ".ts")
     os.system("rd ts")
 
@@ -274,3 +270,6 @@ def main(vodID):
               '.rar" "' + nom_vid + '.mp4"')
     os.system('winrar.exe a -afrar -df -m5 -mt3 -ri15 -t -tk -ts -v95m ".\\' + vodID + '\\' + nom_vid +
              '.rar" "' + nom_vid + '.mp4"')
+
+main("1119113583")
+main("1119109489")
